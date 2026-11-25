@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#050b08">
+    <title>NEXUS QR — Générateur futuriste</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Bibliothèque QR : une connexion est nécessaire pour la charger. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <!-- Écran d'initialisation affiché au premier chargement. -->
+    <div class="ecran-demarrage" id="ecranDemarrage">
+        <div class="demarrage-grille"></div>
+        <div class="demarrage-contenu">
+            <div class="anneau anneau-un"></div>
+            <div class="anneau anneau-deux"></div>
+            <div class="symbole-demarrage">⌗⩸</div>
+            <p class="texte-demarrage">NEXUS<span>_QR</span></p>
+            <p class="etat-demarrage" id="etatDemarrage">INITIALISATION DU SYSTÈME...</p>
+            <div class="barre-demarrage"><span id="progressionDemarrage"></span></div>
+            <p class="pourcentage-demarrage" id="pourcentageDemarrage">00%</p>
+        </div>
+    </div>
+
+    <div class="fond-matrice" id="fondMatrice"></div>
+    <header class="entete">
+        <a class="logo" href="#accueil"><span class="logo-symbole">⩸</span> NEXUS<span>_QR</span></a>
+        <nav class="navigation">
+            <a href="#accueil">Accueil</a>
+            <a href="#generateur">Générateur</a>
+            <a href="#historique">Historique</a>
+        </nav>
+        <div class="etat-systeme"><span class="point-actif"></span> SYSTÈME ACTIF</div>
+    </header>
+
+    <main>
+        <section class="hero" id="accueil">
+            <div class="sur-titre"><span></span> QUANTUM CODE INTERFACE</div>
+            <h1>Transformez rapidement<br> vos données en <span>QR CODE.</span></h1>
+            <p class="description-hero">Génère, personnalise et télécharge tes QR codes dans un environnement numérique nouvelle génération.</p>
+            <a class="bouton-principal" href="#generateur">INITIALISER UN QR <span>↗</span></a>
+            <div class="hero-infos">
+                <div><strong>04</strong><small>TYPES DE DONNÉES</small></div>
+                <div><strong>∞</strong><small>POSSIBILITÉS</small></div>
+                <div><strong>100%</strong><small>LOCAL & PRIVÉ*</small></div>
+            </div>
+            <div class="decor-cible"><span></span><i></i></div>
+        </section>
+
+        <section class="zone-generateur" id="generateur">
+            <div class="titre-section">
+                <div><p class="sur-titre"><span></span> MODULE 01 / CRÉATION</p><h2>QR <span>GENERATOR</span></h2></div>
+                <p class="code-section">NX-QR / 001</p>
+            </div>
+
+            <div class="grille-generateur">
+                <div class="panneau panneau-saisie">
+                    <div class="entete-panneau"><span>CONFIGURATION DES DONNÉES</span><span class="petit-voyant"></span></div>
+                    <div class="choix-types" role="tablist" aria-label="Type de QR code">
+                        <button class="type-actif" data-type="texte">▤ <span>Texte</span></button>
+                        <button data-type="lien">↗ <span>Lien</span></button>
+                        <button data-type="photo">▧ <span>Photo</span></button>
+                        <button data-type="wifi">⌁ <span>Wi-Fi</span></button>
+                    </div>
+
+                    <form id="formulaireQr">
+                        <div class="groupe-champ" id="zoneTexte">
+                            <label for="contenuTexte">CONTENU DU TEXTE</label>
+                            <textarea id="contenuTexte" rows="5" placeholder="Écris ton message ici...">Bienvenue dans NEXUS QR !</textarea>
+                        </div>
+                        <div class="groupe-champ masque" id="zoneLien">
+                            <label for="contenuLien">ADRESSE DU LIEN</label>
+                            <input id="contenuLien" type="url" placeholder="https://exemple.com">
+                        </div>
+                        <div class="groupe-champ masque" id="zonePhoto">
+                            <label for="fichierPhoto">IMAGE À TRANSFORMER</label>
+                            <label class="zone-fichier" for="fichierPhoto">
+                                <span class="icone-fichier">＋</span>
+                                <strong>Choisir une image</strong>
+                                <small>PNG, JPG ou WEBP — petite image recommandée</small>
+                            </label>
+                            <input class="champ-fichier" id="fichierPhoto" type="file" accept="image/png,image/jpeg,image/webp">
+                            <p class="note-photo" id="notePhoto">L'image sera compressée pour tenter de tenir dans un QR code. Les grandes images ne peuvent pas être stockées directement dans un QR.</p>
+                        </div>
+                        <div class="groupe-champ masque" id="zoneWifi">
+                            <label for="nomWifi">NOM DU RÉSEAU (SSID)</label>
+                            <input id="nomWifi" type="text" placeholder="Nom du Wi-Fi">
+                            <label for="motDePasseWifi">MOT DE PASSE</label>
+                            <input id="motDePasseWifi" type="password" placeholder="Mot de passe du Wi-Fi">
+                            <label for="securiteWifi">SÉCURITÉ</label>
+                            <select id="securiteWifi">
+                                <option value="WPA">WPA / WPA2 / WPA3</option>
+                                <option value="WEP">WEP</option>
+                                <option value="nopass">Aucune (réseau ouvert)</option>
+                            </select>
+                            <label class="case-cachee"><input type="checkbox" id="wifiCache"> Réseau masqué</label>
+                        </div>
+                        <div class="options-qr">
+                            <div class="groupe-champ">
+                                <label for="couleurQr">COULEUR DU QR</label>
+                                <select id="couleurQr">
+                                    <option value="#07110b">Vert sombre</option>
+                                    <option value="#00ff88">Vert néon</option>
+                                    <option value="#00d9ff">Cyan</option>
+                                </select>
+                            </div>
+                            <div class="groupe-champ">
+                                <label for="tailleQr">TAILLE</label>
+                                <select id="tailleQr">
+                                    <option value="220">220 × 220</option>
+                                    <option value="280" selected>280 × 280</option>
+                                    <option value="360">360 × 360</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="bouton-principal bouton-large" type="submit">GÉNÉRER LE QR CODE <span>⌁</span></button>
+                        <p class="message-erreur" id="messageErreur" role="alert"></p>
+                    </form>
+                </div>
+
+                <div class="panneau panneau-apercu">
+                    <div class="entete-panneau"><span>APERÇU EN DIRECT</span><span class="code-section">OUTPUT / 02</span></div>
+                    <div class="cadre-qr">
+                        <div class="coin coin-haut-gauche"></div><div class="coin coin-haut-droit"></div>
+                        <div class="coin coin-bas-gauche"></div><div class="coin coin-bas-droit"></div>
+                        <div id="zoneQr" class="zone-qr"><div class="qr-vide">⌗<span>EN ATTENTE<br>DE DONNÉES</span></div></div>
+                    </div>
+                    <p class="statut-qr" id="statutQr"><span></span> AUCUN QR GÉNÉRÉ</p>
+                    <div class="actions-apercu">
+                        <button class="bouton-secondaire" id="boutonTelecharger" disabled>↓ TÉLÉCHARGER PNG</button>
+                        <button class="bouton-secondaire" id="boutonCopier" disabled>▣ COPIER LE CONTENU</button>
+                    </div>
+                    <p class="note-apercu">Scanne le QR code avec l'appareil photo de ton téléphone pour tester son contenu.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="zone-historique" id="historique">
+            <div class="titre-section">
+                <div><p class="sur-titre"><span></span> MODULE 02 / ARCHIVES</p><h2>QR <span>HISTORY</span></h2></div>
+                <button class="bouton-effacer" id="boutonEffacer">EFFACER L'HISTORIQUE ×</button>
+            </div>
+            <div class="liste-historique" id="listeHistorique">
+                <div class="historique-vide">AUCUNE DONNÉE ARCHIVÉE — GÉNÈRE TON PREMIER QR CODE.</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <a class="logo" href="#accueil">⌗ NEXUS<span>_QR</span></a>
+        <p>DESIGNED FOR THE NEXT DIGITAL GENERATION.</p>
+        <span>© 2026 / NEXUS SYSTEM</span>
+    </footer>
+    <div class="notification" id="notification"></div>
+</body>
+</html>
